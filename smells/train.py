@@ -28,7 +28,7 @@ def read_and_shuffle_data(dataset_name):
     with open(dataset_name, "r") as csvfile:
         reader = csv.reader(csvfile)
         next(reader)
-        data_rows = list(reader)
+        data_rows = list(reader)[:400]
         shuffle(data_rows)
 
         for row in data_rows:

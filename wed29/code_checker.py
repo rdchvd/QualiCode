@@ -4,6 +4,8 @@ import re
 from sentence_transformers import SentenceTransformer
 
 model = SentenceTransformer('intfloat/e5-small-v2')
+pinecone.init(api_key="6a704b73-f867-4acc-be53-f84113669594", environment="gcp-starter")
+index = pinecone.Index("english-words")
 
 
 def convert_variable_to_snake_case(variable_name):
@@ -40,7 +42,7 @@ def split_by_non_alphabetical(input_string):
 
 
 # 🤙
-def getScores(index, words):
+def get_scores(index, words):
     embeddings = model.encode(words, normalize_embeddings=True).tolist()
     scores = []
     words = []
@@ -49,26 +51,23 @@ def getScores(index, words):
         if not result:
             continue
         words.append(result[0]["id"])
-        # scores.append(min(max(result[0]["score"], -1), 1))
         if result[0]["score"] > 0.94:
-            scores.append(result[0]["score"])
+            scores.append(min(max(result[0]["score"], -1), 1))
         else:
             scores.append(0)
 
     return scores, words
 
 
+def get_score(var_name):
+    snake_var_name = convert_variable_to_snake_case(var_name)
+    words = list({i for i in split_by_non_alphabetical(snake_var_name) if len(i) > 1})
+    scores, words = get_scores(index, words)
+    return sum(scores) / len(scores)
+
+
 def main():
-    pinecone.init(api_key="6a704b73-f867-4acc-be53-f84113669594", environment="gcp-starter")
-    # words_list = get_unique_english_words()
-    index = pinecone.Index("english-words")
-    varName = "amznProductsByLocale123"
-    # varName = "someVariable1232"
-    snakeVarName = convert_variable_to_snake_case(varName)
-    words = list({i for i in split_by_non_alphabetical(snakeVarName) if len(i) > 1})
-    scores, words = getScores(index, words)
-    print(words, scores)
-    print("Average score: ", sum(scores) / len(scores))
+    print("Average score: ", get_score("amznProductsByLocale123"))
 
 
 if __name__ == "__main__":
