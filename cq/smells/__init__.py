@@ -1,0 +1,2 @@
+from cq.smells.code_checker import SmellCodeChecker
+from cq.smells.train import create_and_train_model as create_and_train_smells_model

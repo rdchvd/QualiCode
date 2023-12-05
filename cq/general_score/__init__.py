@@ -1,0 +1,2 @@
+from cq.general_score.code_checker import CodeChecker
+from cq.general_score.train import create_and_train_model as create_and_train_general_score_model

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cq"
+name = "qualicode"
 version = "0.1.0"
 description = ""
 authors = ["Daryna Rodicheva <daryna.r@gowombat.team>"]
@@ -10,7 +10,6 @@ radon = "^6.0.1"
 pandas = "^2.1.3"
 scikit-learn = "^1.3.2"
 nltk = "^3.8.1"
-click = "^8.1.7"
 
 [tool.poetry.dev-dependencies]
 
@@ -19,4 +18,4 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-cqa = "cq:cli_run"
+cq = "cli:run"
